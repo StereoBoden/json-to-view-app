@@ -8,10 +8,7 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import com.jbappz.jsontoviews.model.AppDescription
-import com.jbappz.jsontoviews.ui.views.GreenView
-import com.jbappz.jsontoviews.ui.views.RedView
-import com.jbappz.jsontoviews.ui.views.YellowView
-
+import com.jbappz.jsontoviews.ui.views.*
 
 /**
  * Class for manipulating the views of the app
@@ -24,6 +21,12 @@ class ViewDesigner(private val context: Context, private val container: Relative
         null,
         android.R.attr.progressBarStyleSmall
     )
+
+    private val topRow = LinearLayout(context)
+    private val greenView = GreenView(context)
+    private val bottomRow = LinearLayout(context)
+    private val blueView = BlueView(context)
+    private val purpleView = PurpleView(context)
 
     init {
         val params = RelativeLayout.LayoutParams(
@@ -43,22 +46,22 @@ class ViewDesigner(private val context: Context, private val container: Relative
     }
 
     fun updateUI(appDescription: AppDescription?) {
+        // TODO: Use config to draw views inside color layouts
         val redViewConfig = appDescription?.modules?.red
 
-        // Initialise Top LinearLayout
-        val topRow = LinearLayout(context)
         topRow.id = View.generateViewId()
+        bottomRow.id = View.generateViewId()
 
-        initTopRow(topRow)
-        initGreenRow(topRow.id)
+        initTopRow()
+        initGreenRow()
+        initBottomRow()
     }
 
     /**
      * Initialise Top Row by constructing Red and Yellow Views
-     * @param topRow The LinearLayout parent for the Red and Yellow Views
      * Add the parent layout to the container
      */
-    private fun initTopRow(topRow: LinearLayout) {
+    private fun initTopRow() {
         val redView = RedView(context)
         val yellowView = YellowView(context)
 
@@ -74,14 +77,35 @@ class ViewDesigner(private val context: Context, private val container: Relative
 
     /**
      * Initialise The Green View
-     * @param topRowId required as a reference to layout the view under the top row
+     * Monitor the height of the view as a callback to update Blue and Purple
      * Add the parent layout to the container
      */
-    private fun initGreenRow(topRowId: Int) {
-        val greenView = GreenView(context)
+    private fun initGreenRow() {
         val greenParams = greenView.layoutParams as RelativeLayout.LayoutParams
-        greenParams.addRule(RelativeLayout.BELOW, topRowId)
+        greenParams.addRule(RelativeLayout.BELOW, topRow.id)
+        greenParams.addRule(RelativeLayout.ABOVE, bottomRow.id)
         container.addView(greenView)
+        greenView.setOnMeasureUpdate { greenHeight ->
+            blueView.setCustomLayoutParams(greenHeight)
+            purpleView.setCustomLayoutParams(greenHeight)
+        }
     }
 
+    /**
+     * Initialise Bottom Row by constructing Blue and Purple Views
+     * Add the parent layout to the container
+     */
+    private fun initBottomRow() {
+        bottomRow.orientation = LinearLayout.HORIZONTAL
+        val params = RelativeLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+        bottomRow.layoutParams = params
+
+        bottomRow.addView(blueView)
+        bottomRow.addView(purpleView)
+        container.addView(bottomRow)
+    }
 }

@@ -25,4 +25,7 @@ object Constants {
     // View Dimensions
     const val RED_HEIGHT = 75
     const val YELLOW_HEIGHT = 75
+
+    // Blue and Purple Height Divider, they are to be a third of the green size
+    const val BLUE_PURPLE_DIVIDER = 3
 }
