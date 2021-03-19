@@ -1,12 +1,14 @@
 package com.jbappz.jsontoviews.ui
 
 import android.content.Context
+import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import com.jbappz.jsontoviews.model.AppDescription
+import com.jbappz.jsontoviews.ui.views.GreenView
 import com.jbappz.jsontoviews.ui.views.RedView
 import com.jbappz.jsontoviews.ui.views.YellowView
 
@@ -42,14 +44,24 @@ class ViewDesigner(private val context: Context, private val container: Relative
 
     fun updateUI(appDescription: AppDescription?) {
         val redViewConfig = appDescription?.modules?.red
-        initTopRow()
+
+        // Initialise Top LinearLayout
+        val topRow = LinearLayout(context)
+        topRow.id = View.generateViewId()
+
+        initTopRow(topRow)
+        initGreenRow(topRow.id)
     }
 
-    private fun initTopRow() {
+    /**
+     * Initialise Top Row by constructing Red and Yellow Views
+     * @param topRow The LinearLayout parent for the Red and Yellow Views
+     * Add the parent layout to the container
+     */
+    private fun initTopRow(topRow: LinearLayout) {
         val redView = RedView(context)
         val yellowView = YellowView(context)
 
-        val topRow = LinearLayout(context)
         topRow.orientation = LinearLayout.HORIZONTAL
         topRow.layoutParams = LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -58,6 +70,18 @@ class ViewDesigner(private val context: Context, private val container: Relative
         topRow.addView(redView)
         topRow.addView(yellowView)
         container.addView(topRow)
+    }
+
+    /**
+     * Initialise The Green View
+     * @param topRowId required as a reference to layout the view under the top row
+     * Add the parent layout to the container
+     */
+    private fun initGreenRow(topRowId: Int) {
+        val greenView = GreenView(context)
+        val greenParams = greenView.layoutParams as RelativeLayout.LayoutParams
+        greenParams.addRule(RelativeLayout.BELOW, topRowId)
+        container.addView(greenView)
     }
 
 }
