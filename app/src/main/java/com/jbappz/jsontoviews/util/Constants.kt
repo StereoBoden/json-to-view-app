@@ -21,4 +21,8 @@ object Constants {
 
     const val PURPLE = "purple"
     const val URL = "url"
+
+    // View Dimensions
+    const val RED_HEIGHT = 75
+    const val YELLOW_HEIGHT = 75
 }

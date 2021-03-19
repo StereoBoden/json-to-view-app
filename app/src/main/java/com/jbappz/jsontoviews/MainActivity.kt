@@ -35,7 +35,9 @@ class MainActivity : AppCompatActivity() {
             viewModel.appDescription.collect {
                 when(it.status) {
                     Status.SUCCESS -> {
-                       viewDesigner.removeProgressBar()
+                        viewDesigner.removeProgressBar()
+                        supportActionBar?.title = it.data?.title
+                        viewDesigner.updateUI(it.data)
                     }
                     Status.ERROR -> {
                         viewDesigner.removeProgressBar()
