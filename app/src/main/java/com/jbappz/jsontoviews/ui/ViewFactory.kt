@@ -85,7 +85,7 @@ class ViewFactory(private val context: Context, private val container: RelativeL
         greenParams.addRule(RelativeLayout.BELOW, topRow.id)
         greenParams.addRule(RelativeLayout.ABOVE, bottomRow.id)
         container.addView(greenView)
-        greenView.setOnMeasureUpdate { greenHeight ->
+        greenView.onDrawListener = { greenHeight ->
             blueView.setCustomLayoutParams(greenHeight)
             purpleView.setCustomLayoutParams(greenHeight)
         }

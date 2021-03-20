@@ -25,8 +25,4 @@ class GreenView @JvmOverloads constructor(
         super.onDraw(canvas)
         onDrawListener?.invoke(height)
     }
-
-    fun setOnMeasureUpdate(listener: (Int) -> Unit) {
-        onDrawListener = listener
-    }
 }
