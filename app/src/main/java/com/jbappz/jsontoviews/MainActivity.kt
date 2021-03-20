@@ -5,7 +5,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.jbappz.jsontoviews.databinding.ActivityMainBinding
-import com.jbappz.jsontoviews.ui.ViewDesigner
+import com.jbappz.jsontoviews.ui.ViewFactory
 import com.jbappz.jsontoviews.util.Status
 import com.jbappz.jsontoviews.util.Util
 import com.jbappz.jsontoviews.viewmodel.AttractionsIOViewModel
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.collect
 class MainActivity : AppCompatActivity() {
     private val viewModel: AttractionsIOViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
-    private lateinit var viewDesigner: ViewDesigner
+    private lateinit var viewFactory: ViewFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
 
         // Init View Designer
-        viewDesigner = ViewDesigner(this, binding.layoutContainer)
+        viewFactory = ViewFactory(this, binding.layoutContainer)
 
         // Init Network Call
         initObservers()
@@ -35,16 +35,16 @@ class MainActivity : AppCompatActivity() {
             viewModel.appDescription.collect {
                 when(it.status) {
                     Status.SUCCESS -> {
-                        viewDesigner.removeProgressBar()
                         supportActionBar?.title = it.data?.title
-                        viewDesigner.updateUI(it.data)
+                        viewFactory.removeProgressBar()
+                        viewFactory.updateUI(it.data)
                     }
                     Status.ERROR -> {
-                        viewDesigner.removeProgressBar()
+                        viewFactory.removeProgressBar()
                         Util.errorDialog(this@MainActivity)
                     }
                     Status.LOADING -> {
-                       viewDesigner.addProgressBar()
+                       viewFactory.addProgressBar()
                     }
                 }
             }

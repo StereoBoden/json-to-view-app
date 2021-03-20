@@ -15,7 +15,7 @@ import com.jbappz.jsontoviews.ui.views.*
  * @param context - The app's context
  * @param container - RelativeLayout the app's container layout within MainActivity
  */
-class ViewDesigner(private val context: Context, private val container: RelativeLayout) {
+class ViewFactory(private val context: Context, private val container: RelativeLayout) {
     private var progressBar: ProgressBar = ProgressBar(
         context,
         null,
