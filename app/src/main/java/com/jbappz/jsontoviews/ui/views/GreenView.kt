@@ -4,29 +4,16 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.util.AttributeSet
-import android.view.ViewGroup
-import android.widget.RelativeLayout
 
 /**
  * Green View class representing the Green View within the main container
- * Extending [RelativeLayout] to provide a container for views inside
  */
-class GreenView : RelativeLayout {
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
-    )
+class GreenView @JvmOverloads constructor(
+        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : ParentView(context, attrs, defStyleAttr) {
 
-    init {
-        setBackgroundColor(Color.GREEN)
-        layoutParams = LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-    }
+    override val customColor: Int
+        get() = Color.GREEN
 
     /**
      * Listener to monitor and pass back the canvas height
