@@ -9,6 +9,9 @@ import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import com.jbappz.jsontoviews.model.AppDescription
 import com.jbappz.jsontoviews.ui.views.*
+import com.jbappz.jsontoviews.ui.views.widgets.ClockWidget
+import com.jbappz.jsontoviews.util.Constants.WIDGET_CLOCK
+import com.jbappz.jsontoviews.util.Util
 
 /**
  * Factory Class for manipulating the views of the app containing business logic
@@ -25,6 +28,8 @@ class ViewFactory(private val context: Context, private val container: RelativeL
 
     // Top LinearLayout that will contain Red and Yellow Views
     private val topRow = LinearLayout(context)
+    val redView = RedView(context)
+    val yellowView = YellowView(context)
 
     private val greenView = GreenView(context)
 
@@ -46,15 +51,14 @@ class ViewFactory(private val context: Context, private val container: RelativeL
     }
 
     fun updateUI(appDescription: AppDescription?) {
-        // TODO: Use config to draw views inside color layouts
-        val redViewConfig = appDescription?.modules?.red
-
         topRow.id = View.generateViewId()
         bottomRow.id = View.generateViewId()
 
         initTopRow()
         initGreenRow()
         initBottomRow()
+
+        initWidgets(appDescription)
     }
 
     /**
@@ -62,12 +66,7 @@ class ViewFactory(private val context: Context, private val container: RelativeL
      * Align in the center of the view
      */
     private fun initProgressBar() {
-        val params = RelativeLayout.LayoutParams(
-                FrameLayout.LayoutParams.WRAP_CONTENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT
-        )
-        params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE)
-        progressBar.layoutParams = params
+        progressBar.layoutParams = Util.getCenterLayoutParams()
     }
 
     /**
@@ -75,9 +74,6 @@ class ViewFactory(private val context: Context, private val container: RelativeL
      * Add the parent layout to the container
      */
     private fun initTopRow() {
-        val redView = RedView(context)
-        val yellowView = YellowView(context)
-
         topRow.orientation = LinearLayout.HORIZONTAL
         topRow.layoutParams = LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -120,5 +116,18 @@ class ViewFactory(private val context: Context, private val container: RelativeL
         bottomRow.addView(blueView)
         bottomRow.addView(purpleView)
         container.addView(bottomRow)
+    }
+
+    /**
+     * Use config to draw views inside color layouts
+     */
+    private fun initWidgets(appDescription: AppDescription?) {
+        val redViewConfig = appDescription?.modules?.red ?: return
+        val clockExists = (redViewConfig.type == WIDGET_CLOCK && redViewConfig.time_zone.isNotEmpty())
+        if(clockExists) {
+            val clockWidget = ClockWidget(context)
+            clockWidget.setTimeZone(redViewConfig.time_zone)
+            redView.addView(clockWidget)
+        }
     }
 }

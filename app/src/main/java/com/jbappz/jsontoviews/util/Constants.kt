@@ -28,4 +28,10 @@ object Constants {
 
     // Blue and Purple Height Divider, they are to be a third of the green size
     const val BLUE_PURPLE_DIVIDER = 3
+
+    // Widget Type Values
+    const val WIDGET_CLOCK = "clock"
+    const val WIDGET_IMAGE = "image"
+    const val WIDGET_DISTANCE = "distance"
+    const val WIDGET_BUTTON = "button"
 }
