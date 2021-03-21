@@ -15,7 +15,6 @@ import com.jbappz.jsontoviews.ui.views.widgets.DistanceWidget
 import com.jbappz.jsontoviews.ui.views.widgets.ImageWidget
 import com.jbappz.jsontoviews.util.Constants.LOCATION_UNKNOWN
 import com.jbappz.jsontoviews.util.Constants.WIDGET_CLOCK
-import com.jbappz.jsontoviews.util.Extensions.toMiles
 import com.jbappz.jsontoviews.util.Util
 
 /**
@@ -272,14 +271,7 @@ class ViewFactory(private val context: Context, private val container: RelativeL
      * @param lat the latitude to calculate with
      * @param lon the longitude to calculate with
      */
-    private fun getDistanceInMiles(lat: Double, lon: Double): Int {
-        val results = FloatArray(3)
-        Location.distanceBetween(
-            lat, lon,
-            configLat, configLon,
-            results
-        )
-        val distanceInKM = results[0]
-        return distanceInKM.toMiles().toInt()
-    }
+    private fun getDistanceInMiles(lat: Double, lon: Double): Double =
+        Util.getDistance(lat, lon, configLat, configLon)
+
 }

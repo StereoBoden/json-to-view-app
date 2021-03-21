@@ -9,9 +9,4 @@ object Extensions {
      * as they all have different screen densities
      */
     fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
-
-    /**
-     * Convert Float (im KM) to Miles
-     */
-    fun Float.toMiles(): Float = (this * 0.62137119F)
 }
