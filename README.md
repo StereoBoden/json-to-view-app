@@ -1,13 +1,13 @@
 # Json to View App
 
-Consumes a json file and programatically generates views based on tehe config
+Consumes a json file and programatically generates views based on the config
 
 ## Installation
 
 Simply run master and it should compile and run within Android Studio
 
 ## Known Issues
-- Blue view has a white area when the location (miles TextView) is updated
+- Blue view has a whitespace area when the location (miles TextView) is updated
 - FusedLocationClient inside LocationClientFactory sometimes doesnt update its coordinates
 
 ## Libraries Used
