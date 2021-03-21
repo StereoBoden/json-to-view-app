@@ -2,8 +2,11 @@ package com.jbappz.jsontoviews.util
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
+import java.lang.Exception
 
 object Util {
     fun errorDialog(context: Context) {
@@ -24,5 +27,17 @@ object Util {
         )
         params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE)
         return params
+    }
+
+    fun openBrowser(context: Context, url: String) {
+        val uri = try {
+            Uri.parse(url)
+        }
+        catch (e : Exception) {
+            return
+        }
+
+        val browserIntent = Intent(Intent.ACTION_VIEW, uri)
+        context.startActivity(browserIntent)
     }
 }

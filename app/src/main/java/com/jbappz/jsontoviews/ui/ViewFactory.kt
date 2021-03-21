@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
+import androidx.appcompat.widget.AppCompatButton
 import com.jbappz.jsontoviews.model.AppDescription
 import com.jbappz.jsontoviews.ui.views.*
 import com.jbappz.jsontoviews.ui.views.widgets.ClockWidget
@@ -124,6 +125,8 @@ class ViewFactory(private val context: Context, private val container: RelativeL
     private fun initWidgets(appDescription: AppDescription?) {
         initRedWidget(appDescription)
         initGreenWidget(appDescription)
+
+        initPurpleWidget(appDescription)
     }
 
     /**
@@ -156,5 +159,21 @@ class ViewFactory(private val context: Context, private val container: RelativeL
             }
             greenView.addView(imageWidget)
         }
+    }
+
+    /**
+     * Create an AppcompatButton and add it to the purple view
+     * Initialise text and click listener based on config
+     */
+    private fun initPurpleWidget(appDescription: AppDescription?) {
+        val purpleConfig = appDescription?.modules?.purple ?: return
+
+        val button = AppCompatButton(context)
+        button.text = purpleConfig.title
+        button.setOnClickListener {
+            Util.openBrowser(context, purpleConfig.url)
+        }
+        button.layoutParams = Util.getCenterLayoutParams()
+        purpleView.addView(button)
     }
 }
