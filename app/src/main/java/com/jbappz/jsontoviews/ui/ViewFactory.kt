@@ -3,13 +3,13 @@ package com.jbappz.jsontoviews.ui
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import com.jbappz.jsontoviews.model.AppDescription
 import com.jbappz.jsontoviews.ui.views.*
 import com.jbappz.jsontoviews.ui.views.widgets.ClockWidget
+import com.jbappz.jsontoviews.ui.views.widgets.ImageWidget
 import com.jbappz.jsontoviews.util.Constants.WIDGET_CLOCK
 import com.jbappz.jsontoviews.util.Util
 
@@ -122,12 +122,39 @@ class ViewFactory(private val context: Context, private val container: RelativeL
      * Use config to draw views inside color layouts
      */
     private fun initWidgets(appDescription: AppDescription?) {
+        initRedWidget(appDescription)
+        initGreenWidget(appDescription)
+    }
+
+    /**
+     * Initialise the Red Clock Widget
+     * Validate the clock properties from the API, only generate if data is valid
+     */
+    private fun initRedWidget(appDescription: AppDescription?) {
         val redViewConfig = appDescription?.modules?.red ?: return
         val clockExists = (redViewConfig.type == WIDGET_CLOCK && redViewConfig.time_zone.isNotEmpty())
         if(clockExists) {
             val clockWidget = ClockWidget(context)
             clockWidget.setTimeZone(redViewConfig.time_zone)
             redView.addView(clockWidget)
+        }
+    }
+
+    /**
+     * Initialise the Green Image Widget
+     * Validate the image URL is not empty, only generate if data is valid
+     */
+    private fun initGreenWidget(appDescription: AppDescription?) {
+        val greenConfig = appDescription?.modules?.green ?: return
+        val imageURL = greenConfig.image
+        if(imageURL.isNotEmpty()) {
+            val imageWidget = ImageWidget(context)
+            greenView.addView(progressBar)
+
+            imageWidget.setImage(greenConfig.image) {
+                greenView.removeView(progressBar)
+            }
+            greenView.addView(imageWidget)
         }
     }
 }

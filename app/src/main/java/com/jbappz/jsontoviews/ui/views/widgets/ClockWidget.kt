@@ -10,6 +10,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 
+/**
+ * Clock Widget class representing an [AppCompatTextView] containing the time
+ * Manages its own coroutine context and updates the clock
+ */
 class ClockWidget: AppCompatTextView, CoroutineScope {
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
