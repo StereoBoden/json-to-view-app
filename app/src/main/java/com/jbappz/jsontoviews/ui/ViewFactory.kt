@@ -49,6 +49,9 @@ class ViewFactory(private val context: Context, private val container: RelativeL
     private var configLat = -1.0
     private var configLon = -1.0
 
+    // Connect any errors with the data
+    private var errorString = ""
+
     init {
        initProgressBar()
     }
@@ -70,6 +73,9 @@ class ViewFactory(private val context: Context, private val container: RelativeL
         initBottomRow()
 
         initWidgets(appDescription)
+        if (errorString.isNotEmpty()) {
+            Util.errorDialog(context, errorString)
+        }
     }
 
     /**
@@ -173,12 +179,20 @@ class ViewFactory(private val context: Context, private val container: RelativeL
      * Validate the clock properties from the API, only generate if data is valid
      */
     private fun initRedWidget(appDescription: AppDescription?) {
-        val redViewConfig = appDescription?.modules?.red ?: return
+        val redViewConfig = appDescription?.modules?.red
+        if(redViewConfig == null) {
+            errorString += "No Red Json, "
+            return
+        }
+
         val clockExists = (redViewConfig.type == WIDGET_CLOCK && redViewConfig.time_zone.isNotEmpty())
         if(clockExists) {
             val clockWidget = ClockWidget(context)
             clockWidget.setTimeZone(redViewConfig.time_zone)
             redView.addView(clockWidget)
+        }
+        else {
+            errorString += "Problem with Red Json, "
         }
     }
 
@@ -187,7 +201,12 @@ class ViewFactory(private val context: Context, private val container: RelativeL
      * Validate the image URL is not empty, only generate if data is valid
      */
     private fun initGreenWidget(appDescription: AppDescription?) {
-        val greenConfig = appDescription?.modules?.green ?: return
+        val greenConfig = appDescription?.modules?.green
+        if(greenConfig == null) {
+            errorString += "No Green Json, "
+            return
+        }
+
         val imageURL = greenConfig.image
         if(imageURL.isNotEmpty()) {
             val imageWidget = ImageWidget(context)
@@ -198,17 +217,27 @@ class ViewFactory(private val context: Context, private val container: RelativeL
             }
             greenView.addView(imageWidget)
         }
+        else {
+            errorString += "Problem with Green Json, "
+        }
     }
 
     /**
      * Add the distance widget to the Blue view based on if the blue config is available
      */
     private fun initBlueWidget(appDescription: AppDescription?) {
-        val coords = appDescription?.modules?.blue?.coordinates ?: return
-        if (coords.valid) {
+        val blueConfig = appDescription?.modules?.blue
+        if(blueConfig == null) {
+            errorString += "No Blue Json, "
+        }
+        val coords = blueConfig?.coordinates
+        if (coords?.valid == true) {
             configLat = coords.latitude
             configLon = coords.longitude
             onLocationCoordsValid?.invoke()
+        }
+        else {
+            errorString += "Problem with Blue Json, "
         }
     }
 
@@ -217,15 +246,25 @@ class ViewFactory(private val context: Context, private val container: RelativeL
      * Initialise text and click listener based on config
      */
     private fun initPurpleWidget(appDescription: AppDescription?) {
-        val purpleConfig = appDescription?.modules?.purple ?: return
-
-        val button = AppCompatButton(context)
-        button.text = purpleConfig.title
-        button.setOnClickListener {
-            Util.openBrowser(context, purpleConfig.url)
+        val purpleConfig = appDescription?.modules?.purple
+        if(purpleConfig == null) {
+            errorString += "No Purple Json, "
         }
-        button.layoutParams = Util.getCenterLayoutParams()
-        purpleView.addView(button)
+
+        val buttonTitle = purpleConfig?.title ?: ""
+        val url = purpleConfig?.url ?: ""
+        if(buttonTitle.isNotEmpty() && url.isNotEmpty()) {
+            val button = AppCompatButton(context)
+            button.text = buttonTitle
+            button.setOnClickListener {
+                Util.openBrowser(context, url)
+            }
+            button.layoutParams = Util.getCenterLayoutParams()
+            purpleView.addView(button)
+        }
+        else {
+            errorString += "Problem with Purple Json, "
+        }
     }
 
     /**
