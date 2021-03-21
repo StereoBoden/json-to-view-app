@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        // Init View Designer
+        // Init View Factory
         viewFactory = ViewFactory(this, binding.layoutContainer)
 
         // Init Network Call

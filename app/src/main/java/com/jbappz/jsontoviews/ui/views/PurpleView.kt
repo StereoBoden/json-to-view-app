@@ -21,10 +21,10 @@ class PurpleView @JvmOverloads constructor(
      * Maintain 1:1 aspect ratio of width and height
      */
     fun setCustomLayoutParams(size: Int) {
-        val ratio = size / BLUE_PURPLE_DIVIDER
+        val ratioSize = size / BLUE_PURPLE_DIVIDER
         layoutParams = LinearLayout.LayoutParams(
-            ratio,
-            ratio
+                ratioSize,
+                ratioSize
         )
     }
 }
