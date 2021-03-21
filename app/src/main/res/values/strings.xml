@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">JsonToViews</string>
+
+    <!-- Error messages-->
+    <string name="error">Error</string>
+    <string name="ok">OK</string>
+    <string name="error_cant_get_data">There was a problem getting the data</string>
+    <string name="error_cant_json_syntax">There is a problem with the JSON of %S</string>
 </resources>

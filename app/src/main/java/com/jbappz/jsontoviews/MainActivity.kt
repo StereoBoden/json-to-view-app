@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     Status.ERROR -> {
                         viewFactory.removeProgressBar()
-                        Util.errorDialog(this@MainActivity)
+                        Util.errorDialog(this@MainActivity, R.string.error_cant_get_data)
                     }
                     Status.LOADING -> {
                        viewFactory.addProgressBar()

@@ -6,14 +6,26 @@ import android.content.Intent
 import android.net.Uri
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
+import com.jbappz.jsontoviews.R
 import java.lang.Exception
 
 object Util {
-    fun errorDialog(context: Context) {
+    fun errorDialog(context: Context, errorMessageResId: Int) {
         AlertDialog.Builder(context)
-            .setTitle("Error")
-            .setMessage("There was an error")
-            .setPositiveButton("OK") { d, _ ->
+            .setTitle(context.resources.getString(R.string.error))
+            .setMessage(context.resources.getString(errorMessageResId))
+            .setPositiveButton(context.resources.getString(R.string.ok)) { d, _ ->
+                d.dismiss()
+            }
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .show()
+    }
+
+    fun errorDialog(context: Context, errorMessage: String) {
+        AlertDialog.Builder(context)
+            .setTitle(context.resources.getString(R.string.error))
+            .setMessage(errorMessage)
+            .setPositiveButton(context.resources.getString(R.string.ok)) { d, _ ->
                 d.dismiss()
             }
             .setIcon(android.R.drawable.ic_dialog_alert)
