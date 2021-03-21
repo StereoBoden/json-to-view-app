@@ -11,7 +11,8 @@ import com.jbappz.jsontoviews.model.AppDescription
 import com.jbappz.jsontoviews.ui.views.*
 
 /**
- * Class for manipulating the views of the app
+ * Factory Class for manipulating the views of the app containing business logic
+ * In a real app this would be added as a Singleton Dependency and be unit tested
  * @param context - The app's context
  * @param container - RelativeLayout the app's container layout within MainActivity
  */
@@ -22,19 +23,18 @@ class ViewFactory(private val context: Context, private val container: RelativeL
         android.R.attr.progressBarStyleSmall
     )
 
+    // Top LinearLayout that will contain Red and Yellow Views
     private val topRow = LinearLayout(context)
+
     private val greenView = GreenView(context)
+
+    // Bottom LinearLayout that will contain the Blue and Purple Views
     private val bottomRow = LinearLayout(context)
     private val blueView = BlueView(context)
     private val purpleView = PurpleView(context)
 
     init {
-        val params = RelativeLayout.LayoutParams(
-            FrameLayout.LayoutParams.WRAP_CONTENT,
-            FrameLayout.LayoutParams.WRAP_CONTENT
-        )
-        params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE)
-        progressBar.layoutParams = params
+       initProgressBar()
     }
 
     fun addProgressBar() {
@@ -55,6 +55,19 @@ class ViewFactory(private val context: Context, private val container: RelativeL
         initTopRow()
         initGreenRow()
         initBottomRow()
+    }
+
+    /**
+     * Initialise the progress bar to indicate a loading state
+     * Align in the center of the view
+     */
+    private fun initProgressBar() {
+        val params = RelativeLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+        )
+        params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE)
+        progressBar.layoutParams = params
     }
 
     /**
