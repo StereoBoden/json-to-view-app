@@ -2,6 +2,8 @@ package com.jbappz.jsontoviews.util
 
 object Constants {
     const val DATA_URL = "https://cdn.attractions.io/rides-api/app-description.json"
+    const val LOCATION_PERMISSION_ID = 99
+    const val LOCATION_UNKNOWN = "Unknown"
 
     // Json Keys - If using a Json parsing library like GSON wouldnt need these as it has @SerialName
     const val TITLE = "title"
@@ -31,7 +33,4 @@ object Constants {
 
     // Widget Type Values
     const val WIDGET_CLOCK = "clock"
-    const val WIDGET_IMAGE = "image"
-    const val WIDGET_DISTANCE = "distance"
-    const val WIDGET_BUTTON = "button"
 }

@@ -30,7 +30,9 @@ data class Blue (
 data class Coordinates(
     val latitude: Double = 0.0,
     val longitude: Double = 0.0
-)
+) {
+    val valid = latitude != 0.0 && longitude != 0.0
+}
 
 data class Purple (
     val type: String = "",
